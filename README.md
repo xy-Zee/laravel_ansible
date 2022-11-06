@@ -9,7 +9,7 @@
 Ansible was used to configure and deploy a Laravel project into a Droplet in Digital ocean.
 
 
-## Technologies/Resources Use
+## Technologies/Resources Used
 - Ansible:  Configuration management tool
 - Digital Ocean: Cloud Platform
 - Git: Version control
