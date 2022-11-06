@@ -1,0 +1,41 @@
+---
+
+- name: Modify ownership of folders
+  shell: |
+    chown -R www-data:www-data laravelapp
+    chmod -R 755 laravelapp
+    mv laravelapp /var/www/html
+
+- name: Configure Virtual Host of the application in Apache
+  blockinfile: 
+    content: |
+      <VirtualHost *:80>
+          ServerAdmin admin@example.com
+          ServerName laravel.example.com
+          DocumentRoot /var/www/html/laravelapp/public/
+          
+          <Directory /var/www/html/laravelapp/public/>
+                  Options Indexes FollowSymLinks
+                  AllowOverride All
+                  Require all granted
+          </Directory>
+          
+          ErrorLog ${APACHE_LOG_DIR}/error.log
+          CustomLog ${APACHE_LOG_DIR}/access.log combined
+      </VirtualHost>
+  args:
+    state: present
+    create: true
+    path: /etc/apache2/sites-available/laravel.conf
+
+
+- name: Deactivate the default Apache site
+  shell: /usr/sbin/a2dissite 000-default.conf
+  notify: Reload Apache
+
+- name: Enable new site
+  shell: a2enmod rewrite &&  /usr/sbin/a2ensite laravel.conf
+  notify: Reload Apache
+
+
+

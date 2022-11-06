@@ -1,0 +1,12 @@
+---
+
+- name: Update project dependencies
+  shell: |
+    composer update --no-interaction
+    composer update friendsofphp/php-cs-fixer --no-interaction
+    composer create-project --no-interaction
+  args: 
+    chdir: /root/laravelapp
+
+
+

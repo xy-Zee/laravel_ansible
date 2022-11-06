@@ -1,0 +1,20 @@
+---
+
+- name: Install git
+  apt:
+    name: git
+    state: present
+    update_cache: yes
+
+- name: Check if repo exists
+  stat: 
+    path: /root/laravelapp
+  register: repoStat
+
+- name: Clone the git repo
+  git:
+    repo: https://github.com/f1amy/laravel-realworld-example-app.git
+    dest: /root/laravelapp
+    clone: yes
+    update: yes
+  when: not repoStat.stat.exists

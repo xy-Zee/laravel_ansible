@@ -1,0 +1,13 @@
+---
+
+- name: replace values of .env file
+  lineinfile:
+    path: /var/www/html/laravelapp/.env
+    regexp: '^{{item.key}}='
+    line: "{{item.key}}={{item.value}}"
+  with_dict: {DB_CONNECTION: mysql, DB_HOST: 127.0.0.1, DB_PORT: 3306, DB_DATABASE: LaravelApp, DB_USERNAME: root, DB_PASSWORD: root}      
+
+- name: Migrate the db
+  shell: php artisan migrate --seed
+  args:
+    chdir: /var/www/html/laravelapp/

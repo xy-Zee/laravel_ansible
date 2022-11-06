@@ -1,0 +1,22 @@
+---
+# tasks file for composer
+
+- name: inspect if Compose exists
+  stat: path=/usr/local/bin/composer
+  register: fileStat
+
+
+- name: Install Compose
+  shell: |
+    curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
+    sudo php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
+  when: not fileStat.stat.exists
+
+- name: Install Apache Server
+  apt: 
+    name: apache2 
+    state: present
+
+  
+
+
